@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Java – Chapitre 2 : Tableaux et chaînes de caractères</title>
+<style>
+:root{
+  --bg:#f4f6f7; --panel:#ffffff; --ink:#1c2a38; --muted:#5b6b7a;
+  --line:#d5dde3; --wood:#8f5a2c; --wood-soft:#f3e7da;
+  --code-bg:#1c2a38; --code-ink:#e8eef3; --ok:#1d7a4b; --warn:#b3261e; --warn-soft:#fbe9e7;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121a22; --panel:#1a2530; --ink:#e6edf2; --muted:#9aabb9;
+    --line:#2c3a47; --wood:#d99a5f; --wood-soft:#2a2118;
+    --code-bg:#0c1218; --code-ink:#e6edf2; --ok:#5fd39a; --warn:#ff8a80; --warn-soft:#2b1917;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121a22; --panel:#1a2530; --ink:#e6edf2; --muted:#9aabb9;
+  --line:#2c3a47; --wood:#d99a5f; --wood-soft:#2a2118;
+  --code-bg:#0c1218; --code-ink:#e6edf2; --ok:#5fd39a; --warn:#ff8a80; --warn-soft:#2b1917;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:1rem}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 "Segoe UI",system-ui,sans-serif;display:flex;min-height:100vh}
+nav{width:270px;flex:none;background:var(--panel);border-right:1px solid var(--line);padding:1.5rem 1.2rem;position:sticky;top:0;height:100vh;overflow-y:auto}
+nav h2{font-size:1rem;margin:0 0 .3rem;color:var(--wood)}
+nav p.cours{margin:0 0 1.4rem;font-size:.85rem;color:var(--muted)}
+nav ul{list-style:none;margin:0 0 1.4rem;padding:0}
+nav li a{display:block;padding:.35rem .6rem;border-radius:6px;color:var(--ink);text-decoration:none;font-size:.95rem}
+nav li a:hover{background:var(--wood-soft)}
+nav li a.actuel{background:var(--wood);color:#fff;font-weight:600}
+nav h3{font-size:.85rem;margin:0 0 .4rem;color:var(--muted);font-weight:600}
+nav .sous a{font-size:.88rem;color:var(--muted)}
+button.theme{margin-top:.5rem;padding:.4rem .7rem;border:1px solid var(--line);background:none;color:var(--ink);border-radius:6px;cursor:pointer;font:inherit;font-size:.85rem}
+main{flex:1;min-width:0;max-width:860px;padding:2.5rem 2rem 4rem;margin:0 auto}
+header.titre{margin-bottom:2rem;padding-bottom:1.2rem;border-bottom:3px solid var(--wood)}
+header.titre h1{font-size:2.1rem;line-height:1.2;margin:0 0 .5rem}
+header.titre p{margin:0;color:var(--muted)}
+section{margin-bottom:3rem}
+h2{font-size:1.5rem;margin:0 0 .8rem;padding-left:.7rem;border-left:5px solid var(--wood)}
+h3{font-size:1.1rem;margin:1.6rem 0 .5rem}
+p{margin:.5rem 0;max-width:70ch}
+code{font:.92em Consolas,"Cascadia Mono",monospace;background:var(--wood-soft);padding:.08em .35em;border-radius:4px}
+pre{background:var(--code-bg);color:var(--code-ink);padding:1rem 1.1rem;border-radius:8px;overflow-x:auto;margin:.8rem 0;font:.9rem/1.55 Consolas,"Cascadia Mono",monospace}
+pre code{background:none;padding:0;font:inherit}
+.image{background:var(--wood-soft);border-left:4px solid var(--wood);padding:.7rem 1rem;border-radius:0 8px 8px 0;margin:1rem 0}
+.piege{background:var(--warn-soft);border-left:4px solid var(--warn);padding:.7rem 1rem;border-radius:0 8px 8px 0;margin:1rem 0}
+.piege strong,.image strong{display:block;margin-bottom:.2rem}
+.tableau{overflow-x:auto;margin:.8rem 0}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{border:1px solid var(--line);padding:.45rem .7rem;text-align:left;vertical-align:top}
+th{background:var(--wood-soft)}
+td code{white-space:nowrap}
+ul.regles{padding-left:1.2rem}
+ul.regles li{margin:.35rem 0}
+@media (max-width:820px){
+  body{display:block}
+  nav{width:auto;height:auto;position:static;border-right:0;border-bottom:1px solid var(--line)}
+  main{padding:1.5rem 1rem 3rem}
+}
+:focus-visible{outline:3px solid var(--wood);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<nav aria-label="Menu des chapitres">
+  <h2>Programmation Java</h2>
+  <p class="cours">Fiches de révision</p>
+
+  <h3>Chapitres</h3>
+  <!--
+    POUR AJOUTER UN CHAPITRE :
+    1. Copie une ligne <li>…</li> ci-dessous.
+    2. Remplace href="#" par le nom du fichier, par exemple href="chapitre3.html".
+    3. Change le texte du lien.
+    Le chapitre en cours garde class="actuel". Dans les autres fichiers,
+    déplace class="actuel" sur le bon lien.
+  -->
+  <ul>
+    <li><a href="#">Chapitre 1 – (lien à ajouter)</a></li>
+    <li><a href="chapitre2-tableaux-chaines.html" class="actuel" aria-current="page">Chapitre 2 – Tableaux et chaînes</a></li>
+    <li><a href="#">Chapitre 3 – Programmation orientée objet</a></li>
+  </ul>
+
+  <h3>Dans ce chapitre</h3>
+  <ul class="sous">
+    <li><a href="#tableaux">Tableaux statiques</a></li>
+    <li><a href="#parcours">Parcourir un tableau</a></li>
+    <li><a href="#deux-dim">Tableaux à deux dimensions</a></li>
+    <li><a href="#arraylist">ArrayList</a></li>
+    <li><a href="#comparer">== ou equals</a></li>
+    <li><a href="#string">Chaînes de caractères</a></li>
+    <li><a href="#pieges">Pièges à retenir</a></li>
+  </ul>
+  <button class="theme" type="button" onclick="basculerTheme()">Mode clair / sombre</button>
+</nav>
+
+<main>
+<header class="titre">
+  <h1>Chapitre 2 : Tableaux et chaînes de caractères</h1>
+  <p>Résumé du cours de Mme Olfa Hamrouni, avec l'image de l'armoire pour tout retenir.</p>
+</header>
+
+<section id="tableaux">
+  <h2>Tableaux statiques</h2>
+  <div class="image"><strong>L'image de l'armoire</strong>Un tableau est une armoire : un seul nom, des compartiments numérotés, un seul type de contenu, et une taille fixée à la fabrication.</div>
+
+  <h3>Déclarer et remplir</h3>
+<pre><code>int[] scores = {1000, 1500, 2490, 6450};   // armoire remplie dès la fabrication
+int[] tab = new int[4];                    // armoire vide de 4 compartiments
+tab[0] = 1000;                             // on range une valeur</code></pre>
+
+  <h3>Les indices</h3>
+  <ul class="regles">
+    <li>On compte à partir de <strong>0</strong> : pour <code>n</code> compartiments, les indices vont de <code>0</code> à <code>n - 1</code>.</li>
+    <li><code>tab.length</code> donne la taille (sans parenthèses). Le dernier indice est <code>tab.length - 1</code>.</li>
+    <li><code>scores[4]</code> sur une armoire de 4 cases lance <code>ArrayIndexOutOfBoundsException</code> : le compartiment n'existe pas.</li>
+  </ul>
+
+  <h3>Valeurs par défaut d'une armoire neuve</h3>
+  <div class="tableau"><table>
+    <tr><th>Type</th><th>Valeur par défaut</th></tr>
+    <tr><td><code>int</code></td><td><code>0</code></td></tr>
+    <tr><td><code>double</code></td><td><code>0.0</code></td></tr>
+    <tr><td><code>boolean</code></td><td><code>false</code></td></tr>
+    <tr><td><code>char</code></td><td><code>'\u0000'</code></td></tr>
+    <tr><td>objet (dont <code>String</code>)</td><td><code>null</code> (aucune enveloppe)</td></tr>
+  </table></div>
+  <p><code>null</code> : aucune enveloppe. <code>""</code> : une enveloppe vide. <code>" "</code> : une enveloppe avec un espace dedans.</p>
+</section>
+
+<section id="parcours">
+  <h2>Parcourir un tableau</h2>
+<pre><code>// for : donne l'indice i
+int somme = 0;
+for (int i = 0; i &lt; notes.length; i++) {
+    somme += notes[i];
+}
+
+// while : départ avant, condition, pas dans le corps
+int i = 0;
+while (i &lt; notes.length) {
+    somme += notes[i];
+    i++;                       // oublié = boucle infinie
+}
+
+// do while : la condition est testée à la fin
+int j = 0;
+do {
+    somme += notes[j];
+    j++;
+} while (j &lt; notes.length);
+
+// for-each : « pour chaque valeur »
+for (int val : notes) {
+    System.out.print(val + " | ");
+}</code></pre>
+  <ul class="regles">
+    <li>Avec <code>i &lt;= notes.length</code>, le dernier tour vaut <code>notes[30]</code> pour 30 cases : erreur <code>ArrayIndexOutOfBoundsException</code>.</li>
+    <li>Le <code>do while</code> entre toujours au moins une fois, même sur un tableau de 0 case.</li>
+  </ul>
+  <div class="piege"><strong>Le for-each travaille sur une photocopie</strong>
+    <code>val = val * 2;</code> change la copie, pas l'armoire. Pour modifier le tableau, il faut l'indice : <code>tab[i] *= 2;</code>.
+    Le for-each ne peut pas non plus parcourir deux tableaux à la fois ni comparer un élément à son suivant.</div>
+</section>
+
+<section id="deux-dim">
+  <h2>Tableaux à deux dimensions</h2>
+  <div class="image"><strong>L'image de la salle de cinéma</strong>Des rangées (lignes) et des fauteuils (colonnes). Il faut deux numéros : <code>tab[ligne][colonne]</code>.</div>
+<pre><code>double[][] statistiques = new double[24][12];   // 24 lignes, 12 colonnes
+statistiques[2][2] = 35.5;                      // 3e gouvernorat, mars
+
+int[][] tab = new int[3][2];
+for (int i = 0; i &lt; tab.length; i++) {          // tab.length = nombre de lignes
+    for (int j = 0; j &lt; tab[i].length; j++) {   // tab[i].length = colonnes de la ligne i
+        System.out.print(tab[i][j] + " ");
+    }
+}</code></pre>
+  <p>Un tableau à deux dimensions est un tableau de tableaux : <code>tab[i]</code> est la ligne <code>i</code>, qui est elle-même un tableau.</p>
+</section>
+
+<section id="arraylist">
+  <h2>ArrayList : l'armoire à taille variable</h2>
+<pre><code>import java.util.ArrayList;
+
+ArrayList&lt;String&gt; fruits = new ArrayList&lt;&gt;();
+fruits.add("pomme");        // [pomme]
+fruits.add("banane");       // [pomme, banane]
+fruits.add(1, "kiwi");      // [pomme, kiwi, banane]
+fruits.set(2, "mangue");    // [pomme, kiwi, mangue]</code></pre>
+  <div class="tableau"><table>
+    <tr><th>Méthode</th><th>Effet</th></tr>
+    <tr><td><code>add(e)</code></td><td>ajoute à la fin</td></tr>
+    <tr><td><code>add(i, e)</code></td><td>insère à la position i, les suivants reculent</td></tr>
+    <tr><td><code>set(i, e)</code></td><td>remplace le contenu de la position i, la taille ne change pas</td></tr>
+    <tr><td><code>remove(i)</code></td><td>supprime par position</td></tr>
+    <tr><td><code>remove(objet)</code></td><td>supprime la première occurrence de cette valeur</td></tr>
+    <tr><td><code>clear()</code></td><td>vide la liste</td></tr>
+    <tr><td><code>get(i)</code></td><td>donne l'élément à la position i</td></tr>
+    <tr><td><code>size()</code></td><td>nombre d'éléments</td></tr>
+    <tr><td><code>isEmpty()</code></td><td>vrai si la liste est vide</td></tr>
+    <tr><td><code>contains(e)</code></td><td>vrai si e est dans la liste</td></tr>
+    <tr><td><code>indexOf(e)</code></td><td>position de la première occurrence, ou <code>-1</code> si introuvable</td></tr>
+  </table></div>
+  <ul class="regles">
+    <li><code>-1</code> signifie « introuvable », car <code>0</code> est déjà une vraie position (le premier compartiment).</li>
+    <li>Tri : <code>Collections.sort(fruits);</code> (croissant) et <code>Collections.sort(fruits, Comparator.reverseOrder());</code> (décroissant).</li>
+    <li>Le type entre <code>&lt; &gt;</code> est un type évolué : <code>Integer</code> pour <code>int</code>, <code>Double</code> pour <code>double</code>.</li>
+    <li>Une <code>ArrayList</code> est une classe qui implémente <code>List</code>, elle-même dans <code>Collection</code>, elle-même dans <code>Iterable</code>.</li>
+  </ul>
+</section>
+
+<section id="comparer">
+  <h2>== ou equals</h2>
+  <div class="image"><strong>L'image des deux enveloppes</strong>Deux enveloppes contiennent chacune 2000 dinars. <code>==</code> demande « est-ce la même enveloppe ? ». <code>equals</code> demande « le contenu est-il le même ? ».</div>
+<pre><code>ArrayList&lt;Integer&gt; tab = new ArrayList&lt;&gt;();
+tab.add(2000);
+tab.add(2000);
+System.out.println(tab.get(0) == tab.get(1));        // false
+System.out.println(tab.get(0).equals(tab.get(1)));   // true</code></pre>
+  <p>Règle : pour comparer le contenu d'objets (éléments d'une <code>ArrayList</code>, <code>String</code>), on utilise <code>equals</code>.</p>
+</section>
+
+<section id="string">
+  <h2>Chaînes de caractères</h2>
+  <p><code>String</code> s'écrit avec des guillemets doubles <code>"..."</code>, <code>char</code> avec des guillemets simples <code>'...'</code>. Un <code>String</code> est un collier de perles : chaque perle est un caractère, numérotée à partir de 0.</p>
+  <div class="image"><strong>L'image de la plaque gravée</strong>Une chaîne est immuable. Une méthode de modification ne change jamais la plaque d'origine : elle en fait graver une nouvelle, qu'il faut ranger dans une variable.</div>
+<pre><code>String s = "  Bonjour  ";
+s.trim();                    // résultat perdu, s ne change pas
+s = s.trim();                // s contient maintenant "Bonjour"
+String t = s.replace("Bon", "Bonne");   // s reste inchangée</code></pre>
+  <div class="tableau"><table>
+    <tr><th>Méthode</th><th>Effet</th></tr>
+    <tr><td><code>charAt(i)</code></td><td>le caractère à la position i</td></tr>
+    <tr><td><code>length()</code></td><td>nombre de caractères, espaces compris (avec des parenthèses)</td></tr>
+    <tr><td><code>substring(début, fin)</code></td><td>extrait de <code>début</code> jusqu'à <code>fin</code> non incluse</td></tr>
+    <tr><td><code>indexOf(x)</code></td><td>position de la première occurrence, ou <code>-1</code></td></tr>
+    <tr><td><code>replace(ancien, nouveau)</code></td><td>remplace toutes les occurrences</td></tr>
+    <tr><td><code>trim()</code></td><td>supprime les espaces au début et à la fin</td></tr>
+    <tr><td><code>toUpperCase()</code>, <code>toLowerCase()</code></td><td>majuscules, minuscules</td></tr>
+    <tr><td><code>contains</code>, <code>startsWith</code>, <code>endsWith</code></td><td>tests de présence</td></tr>
+    <tr><td><code>split(séparateur)</code></td><td>découpe en un tableau de morceaux</td></tr>
+    <tr><td><code>equals</code>, <code>equalsIgnoreCase</code></td><td>compare le contenu, avec ou sans tenir compte de la casse</td></tr>
+  </table></div>
+
+  <h3>Le premier et le dernier mot</h3>
+<pre><code>String phrase = "Salut tout le monde";
+String premier = phrase.substring(0, phrase.indexOf(' '));   // "Salut"
+String[] mots = phrase.split(" ");                          // 4 morceaux
+String dernier = mots[mots.length - 1];                      // "monde"</code></pre>
+
+  <h3>Tester un caractère</h3>
+<pre><code>char c = "Java8".charAt(4);            // '8'
+Character.isDigit(c);                  // true
+Character.isLetter(c);                 // false
+// aussi : isLetterOrDigit, isUpperCase, isLowerCase, isAlphabetic, isWhitespace</code></pre>
+</section>
+
+<section id="pieges">
+  <h2>Pièges à retenir</h2>
+  <div class="piege"><strong>Les erreurs les plus fréquentes du chapitre</strong>
+    <ul class="regles">
+      <li><code>&lt;=</code> à la place de <code>&lt;</code> dans une boucle sur <code>length</code> : l'indice dépasse l'armoire.</li>
+      <li><code>length</code> pour un tableau, <code>length()</code> pour un <code>String</code>, <code>size()</code> pour une <code>ArrayList</code>.</li>
+      <li><code>get(i)</code> est réservé à l'<code>ArrayList</code> : pour un <code>String</code>, c'est <code>charAt(i)</code>.</li>
+      <li>Le for-each modifie une copie, pas le tableau.</li>
+      <li>Un <code>String</code> ne se modifie pas : on réaffecte le résultat (<code>s = s.trim();</code>).</li>
+      <li><code>substring(0, fin)</code> : la position <code>fin</code> n'est pas incluse.</li>
+      <li><code>split(" ")</code> coupe seulement aux espaces : la ponctuation reste collée au mot.</li>
+      <li>Ne pas oublier <code>import java.util.ArrayList;</code> en haut du fichier.</li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<script>
+function basculerTheme(){
+  var r=document.documentElement;
+  var sombre=r.getAttribute("data-theme")==="dark" ||
+    (!r.getAttribute("data-theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  r.setAttribute("data-theme", sombre ? "light" : "dark");
+}
+</script>
+</body>
+</html>
